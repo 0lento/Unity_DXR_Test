@@ -13,12 +13,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support for Material Quality in Shader Graph
 - Material Quality support selection in HDRP Asset
 - Renamed XR shader macro from UNITY_STEREO_ASSIGN_COMPUTE_EYE_INDEX to UNITY_XR_ASSIGN_VIEW_INDEX
+- Raytracing ShaderGraph node for HDRP shaders
+- Custom passes volume component with 3 injection points: Before Rendering, Before Transparent and Before Post Process
+- Alpha channel is now properly exported to camera render textures when using FP16 color buffer format
+- Support for XR SDK mirror view modes
+- HD Master nodes in Shader Graph now support Normal and Tangent modification in vertex stage. 
+- Added override Ambient Occlusion option on debug windows
+- Added Custom Post Processes with 3 injection points: Before Transparent, Before Post Process and After Post Process
 
 ### Fixed
 - Fixed wizard infinite loop on cancellation
 - Fixed with compute shader error about too many threads in threadgroup on low GPU
 - Fixed invalid contact shadow shaders being created on metal
-- Fixed  a bug where if Assembly.GetTypes throws an exception due to mis-versioned dlls, then no preprocessors are used in the shader stripper
+- Fixed a bug where if Assembly.GetTypes throws an exception due to mis-versioned dlls, then no preprocessors are used in the shader stripper
 - Fixed typo in AXF decal property preventing to compile
 - Fixed reflection probe with XR single-pass and FPTL
 - Fixed force gizmo shown when selecting camera in hierarchy
@@ -27,6 +34,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix FrameSettings names and tooltips
 - Fixed error with XR SDK when the Editor is not in focus
 - Fixed errors with RenderGraph, XR SDK and occlusion mesh
+- Fixed shadow routines compilation errors when "real" type is a typedef on "half".
+- Fixed toggle volumetric lighting in the light UI
+- Fixed post-processing history reset handling rt-scale incorrectly
+- Fixed crash with terrain and XR multi-pass
+- Fixed ShaderGraph material synchronization issues
 
 ### Changed
 - Update Wizard layout.
@@ -37,6 +49,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Replaced usage of ENABLE_VR in XRSystem.cs by version defines based on the presence of the built-in VR and XR modules
 - Added an update virtual function to the SkyRenderer class. This is called once per frame. This allows a given renderer to amortize heavy computation at the rate it chooses. Currently only the physically based sky implements this.
 - Removed mandatory XRPass argument in HDCamera.GetOrCreate()
+- Restored the HDCamera parameter to the sky rendering builtin parameters.
+- Removed usage of StructuredBuffer for XR View Constants
+- Expose Direct Specular Lighting control in FrameSettings
+- Deprecated ExponentialFog and VolumetricFog volume components. Now there is only one exponential fog component (Fog) which can add Volumetric Fog as an option. Added a script in Edit -> Render Pipeline -> Upgrade Fog Volume Components.
 
 ## [7.0.1] - 2019-07-25
 

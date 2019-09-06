@@ -16,9 +16,7 @@ namespace UnityEditor.Rendering.HighDefinition
             LitTesselation,
             LayeredLit,
             LayeredLitTesselation,
-            StackLit,
             Unlit,
-            Fabric,
             Decal,
             TerrainLit,
             AxF,
@@ -41,9 +39,7 @@ namespace UnityEditor.Rendering.HighDefinition
             "HDRP/LitTessellation",
             "HDRP/LayeredLit",
             "HDRP/LayeredLitTessellation",
-            "HDRP/StackLit",
             "HDRP/Unlit",
-            "HDRP/Fabric",
             "HDRP/Decal",
             "HDRP/TerrainLit",
             "HDRP/AxF",
@@ -117,10 +113,15 @@ namespace UnityEditor.Rendering.HighDefinition
             => UnityEngine.Rendering.CoreUtils
                 .GetAllTypesDerivedFrom<BaseShaderPreprocessor>()
                 .Select(Activator.CreateInstance)
-                .Cast<BaseShaderPreprocessor>().ToList();
+                .Cast<BaseShaderPreprocessor>()
+                .OrderByDescending(spp => spp.Priority)
+                .ToList();
         
         internal static bool IsHDRPShader(Shader shader, bool upgradable = false)
         {
+            if (shader == null)
+                return false;
+
             if (shader.IsShaderGraph())
             {
                 var outputNodeType = GraphUtil.GetOutputNodeType(AssetDatabase.GetAssetPath(shader));
@@ -130,6 +131,27 @@ namespace UnityEditor.Rendering.HighDefinition
                 return s_ShaderPaths.Contains(shader.name);
             else
                 return shader.name.Contains("HDRP");
+        }
+
+        internal static bool IsUnlitHDRPShader(Shader shader)
+        {
+            if (shader == null)
+                return false;
+
+            if (shader.IsShaderGraph())
+            {
+                string shaderPath = AssetDatabase.GetAssetPath(shader);
+                switch (GraphUtil.GetOutputNodeType(shaderPath).Name)
+                {
+                    case nameof(HDUnlitMasterNode):
+                    case nameof(UnlitMasterNode):
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            else
+                return shader.name == "HDRP/Unlit";
         }
 
         internal static string GetShaderPath(ShaderID id)
