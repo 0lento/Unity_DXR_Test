@@ -17,6 +17,11 @@ MonoBehaviour:
   rayTracing:
     m_OverrideState: 1
     m_Value: 1
+  layerMask:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 2
+      m_Bits: 4294967295
   rayLength:
     m_OverrideState: 1
     m_Value: 10
@@ -32,7 +37,15 @@ MonoBehaviour:
     m_Value: 0
   rayBinning:
     m_OverrideState: 1
+    m_Value: 1
+  fullResolution:
+    m_OverrideState: 0
     m_Value: 0
+  upscaleRadius:
+    m_OverrideState: 0
+    m_Value: 2
+    min: 2
+    max: 4
   sampleCount:
     m_OverrideState: 1
     m_Value: 1
@@ -56,7 +69,7 @@ MonoBehaviour:
     max: 1
   secondDenoiserPass:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   secondDenoiserRadius:
     m_OverrideState: 1
     m_Value: 0.1
